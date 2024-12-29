@@ -21,6 +21,7 @@ import proj.devMarceloCimadon.MovieRater.Repositories.ReviewRepository;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +53,9 @@ class ReviewServiceTest {
     @Captor
     private ArgumentCaptor<UUID> uuidArgumentCaptor;
 
+    @Captor
+    private ArgumentCaptor<String> nameArgumentCaptor;
+
     @Nested
     class createReview{
         @Test
@@ -67,6 +71,9 @@ class ReviewServiceTest {
 
             var review = new Review(1L, user, movie, 7.8F, "content", Instant.now(), null);
             doReturn(review).when(reviewRepository).save(reviewArgumentCaptor.capture());
+
+            var reviewList = List.of(new Review(1L, user, movie, 7.8, "content", Instant.now(), null));
+            when(reviewRepository.findReviewsByMovieName(movie.getName())).thenReturn(Optional.of(reviewList));
 
             var input = new CreateReviewDto("username","movie", 7.0, "content");
             //Act
@@ -128,6 +135,35 @@ class ReviewServiceTest {
             //Act & Assert
             assertThrows(RecordNotFoundException.class, () -> reviewService.findReviewsByUserId(userId.toString()));
         }
+    }
+
+    @Nested
+    class findReviewByMovieName{
+        @Test
+        @DisplayName("Should get a list of reviews by movie name with success")
+        void shouldGetAListOfReviewsByMovieNameWithSuccess(){
+            //Arrange
+            var reviews = new ArrayList<Review>();
+            var user = new User(UUID.randomUUID(), "username", "name", "email@email.com", "password", null, null, reviews, Instant.now(), null);
+            var movie = new Movie(1L, "name", "description", null, null, null, null, reviews, 7.0F);
+            reviews.add(new Review(1L, user, movie, 7.8, "content", Instant.now(), null));
+            doReturn(Optional.of(reviews)).when(reviewRepository).findReviewsByMovieName(nameArgumentCaptor.capture());
+            //Act
+            var output = reviewService.findReviewsByMovieName(movie.getName());
+            //Assert
+            assertTrue(output.isPresent());
+        }
+
+        @Test
+        @DisplayName("Should throw a record not found exception when optional is empty")
+        void shouldThrowARecordNotFoundExceptionWhenOptionalIsEmpty(){
+            //Arrange
+            var movieName = "movie";
+            doReturn(Optional.empty()).when(reviewRepository).findReviewsByMovieName(nameArgumentCaptor.capture());
+            //Act & Assert
+            assertThrows(RecordNotFoundException.class, () -> reviewService.findReviewsByMovieName(movieName));
+        }
+
     }
 
     @Nested

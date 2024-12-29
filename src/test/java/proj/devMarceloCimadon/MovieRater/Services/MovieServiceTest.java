@@ -14,9 +14,11 @@ import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
 import proj.devMarceloCimadon.MovieRater.Models.Artist;
 import proj.devMarceloCimadon.MovieRater.Models.Movie;
+import proj.devMarceloCimadon.MovieRater.Models.Review;
 import proj.devMarceloCimadon.MovieRater.Models.Studio;
 import proj.devMarceloCimadon.MovieRater.Repositories.MovieRepository;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,6 +119,38 @@ class MovieServiceTest {
             //Assert
             assertNotNull(output);
             assertEquals(movieList.size(), output.size());
+        }
+    }
+
+    @Nested
+    class updateMovieGrade{
+        @Test
+        @DisplayName("Should update a movie grade with success")
+        void shouldUpdateAMovieGradeWithSuccess(){
+            //Arrange
+            var reviews = new ArrayList<Review>();
+            var movie = new Movie(1L, "name", "description", null, null, null, null, reviews, 0.0F);
+            reviews.add(new Review(1L, null, movie, 5.5, "content", Instant.now(), null));
+            reviews.add(new Review(2L, null, movie, 7.0, "content", Instant.now(), null));
+            doReturn(Optional.of(movie)).when(movieRepository).findMovieByName(nameArgumentCaptor.capture());
+            doReturn(movie).when(movieRepository).save(movieArgumentCaptor.capture());
+            //Act
+            movieService.updateMovieGrade(movie.getName(), reviews);
+            //Assert
+            assertEquals(movie.getName(), nameArgumentCaptor.getValue());
+
+            var movieCaptured = movieArgumentCaptor.getValue();
+
+            assertEquals((float) reviews.stream().mapToDouble(Review::getGrade).average().orElse(0.0), movieCaptured.getFinalGrade());
+
+            verify(movieRepository, times(1)).findMovieByName(nameArgumentCaptor.getValue());
+            verify(movieRepository, times(1)).save(movieArgumentCaptor.getValue());
+        }
+
+        @Test
+        @DisplayName("Should throe a record not found exception when optional is empty")
+        void shouldThrowARecordNotFoundExceptionWhenOptionalIsEmpty(){
+
         }
     }
 

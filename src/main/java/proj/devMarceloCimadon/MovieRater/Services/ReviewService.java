@@ -36,6 +36,9 @@ public class ReviewService {
 
         var reviewSaved = reviewRepository.save(review);
 
+        var reviews = findReviewsByMovieName(createReviewDto.movieName()).orElseThrow(() -> new RecordNotFoundException("Review movie name", createReviewDto.movieName()));
+        movieService.updateMovieGrade(createReviewDto.movieName(), reviews);
+
         return reviewSaved.getReviewId();
     }
 
@@ -44,6 +47,14 @@ public class ReviewService {
         var listReviews = reviewRepository.findReviewsByUserId(id);
         if (listReviews.isEmpty()) {
             throw new RecordNotFoundException("ID", userId);
+        }
+        return listReviews;
+    }
+
+    public Optional<List<Review>> findReviewsByMovieName(String movieName) {
+        var listReviews = reviewRepository.findReviewsByMovieName(movieName);
+        if (listReviews.isEmpty()){
+            throw new RecordNotFoundException("Movie", movieName);
         }
         return listReviews;
     }

@@ -4,11 +4,10 @@ import org.springframework.stereotype.Service;
 import proj.devMarceloCimadon.MovieRater.Dto.Movie.CreateMovieDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
-import proj.devMarceloCimadon.MovieRater.Models.Artist;
 import proj.devMarceloCimadon.MovieRater.Models.Movie;
+import proj.devMarceloCimadon.MovieRater.Models.Review;
 import proj.devMarceloCimadon.MovieRater.Repositories.MovieRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,6 +44,18 @@ public class MovieService {
 
     public List<Movie> listMovies(){
         return movieRepository.findAll();
+    }
+
+    public void updateMovieGrade(String movieName, List<Review> reviews){
+        var movieEntity = findMovieByName(movieName);
+        if (movieEntity.isEmpty()){
+            throw new RecordNotFoundException("Movie", movieName);
+        }
+        var movie = movieEntity.get();
+        var averageGrade = reviews.stream().mapToDouble(Review::getGrade).average().orElse(0.0);
+        movie.setFinalGrade((float) averageGrade);
+
+        movieRepository.save(movie);
     }
 
     public Optional<Movie> findMovieByName(String name){

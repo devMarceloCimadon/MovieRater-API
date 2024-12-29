@@ -14,4 +14,7 @@ import java.util.UUID;
 public interface ReviewRepository extends JpaRepository<Review, Long>{
     @Query("SELECT r FROM Review r WHERE r.user.id = :userId")
     Optional<List<Review>> findReviewsByUserId(@Param("userId") UUID id);
+
+    @Query("SELECT r FROM Review r WHERE r.movie.name = :movieName")
+    Optional<List<Review>> findReviewsByMovieName(@Param("movieName") String movieName);
 }
