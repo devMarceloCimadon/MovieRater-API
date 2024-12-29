@@ -1,7 +1,5 @@
 # MovieRater-API
 
----
-
 ###
 
 <div>
@@ -16,14 +14,10 @@
 
 ## 🖥️About the Project
 
----
-
 <p>The project is a case study on the creation of APIs, emphasizing the use of Java best practices with the Spring framework. These practices include customized exception handling to avoid excessive use of try/catch blocks, unit testing for methods defined in the service layer of the application, explicit relationships between database entities, and the use of Data Transfer Objects (DTOs) to prevent direct database access.</p> 
 <p>The example chosen for this study was a movie rating system, featuring entities such as User and Movie, along with their relationships.</p>
 
 ## ⚙️Functionalities
-
----
 
 <p>All the classes will represent entities (tables) in our database, so we have created classes to manipulate the data in those table, specifically Repository and Service.<p>
 <p>The classes also need DTO classes, to avoid access the entity directly.</p>
@@ -80,8 +74,6 @@
 
 ## 💻Technologies
 
----
-
 The technologies used were:
 - [Java](https://www.java.com/pt-BR/)
 - [Spring](https://spring.io)
@@ -92,8 +84,6 @@ The technologies used were:
 - [MySQL](https://www.mysql.com)
 
 ## 🛠️Installation
-
----
 
 1. Clone repository:
 ````git bash
@@ -107,14 +97,10 @@ docker compose up
 
 ## 🔧Usage
 
----
-
 1. Start dependencies with Maven.
 2. The API will be accessible at http://localhost:8080
 
 ## 🌐API Endpoints
-
----
 
 All the paths from API start with: ` /v1 `
 
@@ -329,7 +315,5 @@ Status:
 | Delete Review by ID     | Delete   | /review/{reviewId} |
 
 ## ☝️🤓Author
-
----
 
 Developed by [Marcelo Cimadon](https://github.com/devMarceloCimadon)
