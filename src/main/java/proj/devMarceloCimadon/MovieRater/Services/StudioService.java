@@ -2,6 +2,7 @@ package proj.devMarceloCimadon.MovieRater.Services;
 
 import org.springframework.stereotype.Service;
 import proj.devMarceloCimadon.MovieRater.Dto.Studio.CreateStudioDto;
+import proj.devMarceloCimadon.MovieRater.Dto.Studio.ResponseStudioDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
 import proj.devMarceloCimadon.MovieRater.Models.Studio;
@@ -29,15 +30,12 @@ public class StudioService {
         return savedStudio.getStudioId();
     }
 
-    public List<Studio> listStudios(){
-        return studioRepository.findAll();
+    public List<ResponseStudioDto> listStudios(){
+        var studios = studioRepository.findAll();
+        return studios.stream().map(ResponseStudioDto :: fromEntity).toList();
     }
 
-    public Optional<Studio> findStudioByName(String name){
-        var studio = studioRepository.findStudioByName(name);
-        if (studio.isEmpty()){
-            throw new RecordNotFoundException("Name", name);
-        }
-        return studio;
+    public Studio findStudioByName(String name){
+        return studioRepository.findStudioByName(name).orElseThrow(() -> new RecordNotFoundException("Studio name", name));
     }
 }

@@ -12,9 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import proj.devMarceloCimadon.MovieRater.Dto.Studio.CreateStudioDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
+import proj.devMarceloCimadon.MovieRater.Models.Movie;
 import proj.devMarceloCimadon.MovieRater.Models.Studio;
 import proj.devMarceloCimadon.MovieRater.Repositories.StudioRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +72,8 @@ class StudioServiceTest {
         @DisplayName("Should return all studios with success")
         void shouldReturnAllStudiosWithSuccess() {
             //Arrange
-            var studio = new Studio(1L, "name", null);
+            List<Movie> movies = new ArrayList<Movie>();
+            var studio = new Studio(1L, "name", movies);
             var studioList = List.of(studio);
             doReturn(studioList).when(studioRepository).findAll();
             //Act
@@ -92,7 +95,7 @@ class StudioServiceTest {
             //Act
             var output = studioService.findStudioByName(studio.getName());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
             assertEquals(studio.getName(), nameArgumentCaptor.getValue());
         }
 

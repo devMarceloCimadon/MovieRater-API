@@ -3,6 +3,7 @@ package proj.devMarceloCimadon.MovieRater.Controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import proj.devMarceloCimadon.MovieRater.Dto.Artist.CreateArtistDto;
+import proj.devMarceloCimadon.MovieRater.Dto.Artist.ResponseArtistDto;
 import proj.devMarceloCimadon.MovieRater.Models.Artist;
 import proj.devMarceloCimadon.MovieRater.Services.ArtistService;
 
@@ -25,13 +26,14 @@ public class ArtistController {
     }
 
     @GetMapping("/{artistName}")
-    public ResponseEntity<Artist> getArtistByName(@PathVariable("artistName") String artistName){
+    public ResponseEntity<ResponseArtistDto> getArtistByName(@PathVariable("artistName") String artistName){
         var artist = artistService.findArtistByName(artistName);
-        return ResponseEntity.ok(artist.get());
+        var artistResponse = ResponseArtistDto.fromEntity(artist);
+        return ResponseEntity.ok(artistResponse);
     }
 
     @GetMapping("/artists")
-    public ResponseEntity<List<Artist>> listArtists(){
+    public ResponseEntity<List<ResponseArtistDto>> listArtists(){
         var artists = artistService.listArtists();
         return ResponseEntity.ok(artists);
     }

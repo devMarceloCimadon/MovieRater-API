@@ -13,10 +13,7 @@ import proj.devMarceloCimadon.MovieRater.Dto.Review.CreateReviewDto;
 import proj.devMarceloCimadon.MovieRater.Dto.Review.UpdateReviewDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
-import proj.devMarceloCimadon.MovieRater.Models.Movie;
-import proj.devMarceloCimadon.MovieRater.Models.Review;
-import proj.devMarceloCimadon.MovieRater.Models.Studio;
-import proj.devMarceloCimadon.MovieRater.Models.User;
+import proj.devMarceloCimadon.MovieRater.Models.*;
 import proj.devMarceloCimadon.MovieRater.Repositories.ReviewRepository;
 
 import java.time.Instant;
@@ -65,9 +62,9 @@ class ReviewServiceTest {
             var studio = new Studio(1L, "studio", null);
 
             var user = new User(UUID.randomUUID(), "username", "Name", "email@email.com", "password", null, null, null, Instant.now(), null);
-            when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+            when(userService.findUserByUsername(user.getUsername())).thenReturn(user);
             var movie = new Movie(1L, "movie", "description", studio, null, null, null, null, 7.0F);
-            when(movieService.findMovieByName(movie.getName())).thenReturn(Optional.of(movie));
+            when(movieService.findMovieByName(movie.getName())).thenReturn(movie);
 
             var review = new Review(1L, user, movie, 7.8F, "content", Instant.now(), null);
             doReturn(review).when(reviewRepository).save(reviewArgumentCaptor.capture());
@@ -96,18 +93,6 @@ class ReviewServiceTest {
             assertThrows(RecordNotCreatedException.class, () -> reviewService.createReview(input));
             verify(reviewRepository, times(0)).save(any());
         }
-
-        @Test
-        @DisplayName("Should throw a record not found exception when movie was not found")
-        void shouldThrowARecordNotFoundExceptionWhenMovieWasNotFound() {
-            var movieName = "name";
-            when(movieService.findMovieByName(movieName)).thenReturn(Optional.empty());
-
-            var input = new CreateReviewDto("username", movieName, 7.0, "content");
-
-            assertThrows(RecordNotFoundException.class, () -> reviewService.createReview(input));
-            verify(reviewRepository, times(0)).save(any());
-        }
     }
 
     @Nested
@@ -118,12 +103,16 @@ class ReviewServiceTest {
             //Arrange
             var reviews = new ArrayList<Review>();
             var user = new User(UUID.randomUUID(), "name", "username", "email@email.com", "password", null, null, reviews, Instant.now(), null);
-            reviews.add(new Review(1L, user, null, 7.8, "content", Instant.now(), null));
+            var studio = new Studio(1L, "name", null);
+            List<Artist> artists = new ArrayList<>();
+            var movie = new Movie(1L, "name", "description", studio, null, null, artists, null, 7.0F);
+            reviews.add(new Review(1L, user, movie, 7.8, "content", Instant.now(), null));
             doReturn(Optional.of(reviews)).when(reviewRepository).findReviewsByUserId(uuidArgumentCaptor.capture());
             //Act
             var output = reviewService.findReviewsByUserId(user.getUserId().toString());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
+            assertEquals(reviews.size(), output.size());
         }
 
         @Test
@@ -151,7 +140,7 @@ class ReviewServiceTest {
             //Act
             var output = reviewService.findReviewsByMovieName(movie.getName());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
         }
 
         @Test

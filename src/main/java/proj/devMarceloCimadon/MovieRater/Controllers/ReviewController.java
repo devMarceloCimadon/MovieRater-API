@@ -3,6 +3,7 @@ package proj.devMarceloCimadon.MovieRater.Controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import proj.devMarceloCimadon.MovieRater.Dto.Review.CreateReviewDto;
+import proj.devMarceloCimadon.MovieRater.Dto.Review.ResponseReviewDto;
 import proj.devMarceloCimadon.MovieRater.Dto.Review.UpdateReviewDto;
 import proj.devMarceloCimadon.MovieRater.Models.Review;
 import proj.devMarceloCimadon.MovieRater.Services.ReviewService;
@@ -26,9 +27,9 @@ public class ReviewController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Review>> listReviewsByUser(@PathVariable("userId") String userId) {
-        var userReviews = reviewService.findReviewsByUserId(userId);
-        return ResponseEntity.ok(userReviews.get());
+    public ResponseEntity<List<ResponseReviewDto>> listReviewsByUser(@PathVariable("userId") String userId) {
+        var reviewsResponse = reviewService.findReviewsByUserId(userId);
+        return ResponseEntity.ok(reviewsResponse);
     }
 
     @PutMapping("/{reviewId}")

@@ -14,10 +14,13 @@ import proj.devMarceloCimadon.MovieRater.Dto.User.UpdateUserDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.DataWithThisValueAlreadyExists;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
+import proj.devMarceloCimadon.MovieRater.Models.Movie;
+import proj.devMarceloCimadon.MovieRater.Models.Review;
 import proj.devMarceloCimadon.MovieRater.Models.User;
 import proj.devMarceloCimadon.MovieRater.Repositories.UserRepository;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,11 +100,13 @@ class UserServiceTest {
         void shouldGetAUserByNameWithSuccessWhenOptionalIsPresent() {
             //Arrange
             var user = new User(UUID.randomUUID(), "username", "name", "email@email.com", "password", null, null, null, Instant.now(), null);
-            doReturn(Optional.of(user)).when(userRepository).findUserByName(nameArgumentCaptor.capture());
+            var userList = List.of(user);
+            doReturn(Optional.of(userList)).when(userRepository).findUserByName(nameArgumentCaptor.capture());
             //Act
             var output = userService.findUserByName(user.getName());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
+            assertEquals(userList.size(), output.size());
             assertEquals(user.getName(), nameArgumentCaptor.getValue());
         }
 
@@ -127,7 +132,7 @@ class UserServiceTest {
             //Act
             var output = userService.findUserByUsername(user.getUsername());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
             assertEquals(user.getUsername(), usernameArgumentCaptor.getValue());
         }
 
@@ -148,7 +153,11 @@ class UserServiceTest {
         @DisplayName("Should return all users with success")
         void shouldReturnAllUsersWithSuccess() {
             //Arrange
-            var user = new User(UUID.randomUUID(), "username", "name", "email@email.com", "password", null, null, null, Instant.now(), null);
+            List<Movie> movies = new ArrayList<>();
+
+            List<Review> reviews = new ArrayList<>();
+
+            var user = new User(UUID.randomUUID(), "username", "name", "email@email.com", "password", movies, movies, reviews, Instant.now(), null);
             var userList = List.of(user);
             doReturn(userList).when(userRepository).findAll();
             //Act

@@ -13,9 +13,10 @@ import proj.devMarceloCimadon.MovieRater.Dto.Artist.CreateArtistDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
 import proj.devMarceloCimadon.MovieRater.Models.Artist;
-import proj.devMarceloCimadon.MovieRater.Models.Studio;
+import proj.devMarceloCimadon.MovieRater.Models.Movie;
 import proj.devMarceloCimadon.MovieRater.Repositories.ArtistRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,8 +72,11 @@ class ArtistServiceTest {
         @DisplayName("Should return all artists with success")
         void shouldReturnAllArtistsWithSuccess() {
             //Arrange
-            var artist = new Artist(1L, "name", null);
+            List<Movie> movies = new ArrayList<>();
+
+            var artist = new Artist(1L, "name", movies);
             var artistList = List.of(artist);
+
             doReturn(artistList).when(artistRepository).findAll();
             //Act
             var output = artistService.listArtists();
@@ -93,7 +97,7 @@ class ArtistServiceTest {
             //Act
             var output = artistService.findArtistByName(artist.getName());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
             assertEquals(artist.getName(), nameArgumentCaptor.getValue());
         }
 

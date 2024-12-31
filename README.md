@@ -120,92 +120,98 @@ Body:
 
 ````json
 {
-  "name": "name",
-  "username": "username",
-  "email": "email@email.com",
-  "password": "password"
+  "username": "devMarceloCima2",
+  "name": "Marcelo Cimadon",
+  "email": "marcelo@gmail.com",
+  "password": "password123"
 }
 ````
 
 Status:
 
-| **Code** | **Status**  | **Reason**                             |
-|----------|-------------|----------------------------------------|
-| 201      | Created     | The user was successfully created.     |
-| 400      | Bad Request | User not created                       |
-| 409      | Conflict    | User with this username already exists |
+| **Code** | **Status**  | **Reason**                              |
+|----------|-------------|-----------------------------------------|
+| 201      | Created     | The user was successfully created.      |
+| 400      | Bad Request | User not created.                       |
+| 409      | Conflict    | User with this username already exists. |
 
 ### Get User by name
 Response body:
 ````json
-{
-  "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-  "name": "name",
-  "username": "username",
-  "email": "email@email.com",
-  "password": "password",
-  "user_watchedMovies":[
-    {
-      "movieId": 1,
-      "movieName": "Movie name"
-    }
-  ],
-  "user_watchList": [
-    {
-      "movieId": 2,
-      "movieName": "Movie to watch name"
-    }
-  ],
-  "reviews": [
-    {
-      "reviewId": 1,
-      "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-      "movieId": "1",
-      "grade": 2.5,
-      "content": "This movie is awful."
-    }
-  ],
-  "creationTimestamp": "2024-12-26 09:25:41"
-}
+[
+  {
+    "username": "devMarceloCima2",
+    "name": "Dev Marcelo",
+    "email": "marcelo@gmail.com",
+    "watchedMovies": [],
+    "watchList": [],
+    "reviews": [
+      {
+        "user": {
+            "username": "devMarceloCima2",
+            "name": "Dev Marcelo"
+        },
+        "movie": {
+          "name": "Demolition",
+          "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+          "studio": {
+            "name": "Sony Pictures"
+          },
+          "cast": [
+            {
+              "name": "Jake Gyllenhaal"
+            }
+          ],
+          "finalGrade": 7.0
+        },
+        "grade": 7.0,
+        "content": "content",
+        "creationTimestamp": "2024-12-28T13:37:35.771395Z"
+      }
+    ]
+  }
+]
 ````
 Status:
 
-| **Code** | **Status** | **Reason**                          |
-|----------|------------|-------------------------------------|
-| 200      | Ok         | The User was successfully returned. |
-| 404      | Not found  | User was not found.                 |
+| **Code** | **Status** | **Reason**                                                    |
+|----------|------------|---------------------------------------------------------------|
+| 200      | Ok         | A list of Users with the same name was successfully returned. |
+| 404      | Not found  | User was not found.                                           |
 
 ### Get User by username
 Response body:
 ````json
 {
-  "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-  "name": "name",
-  "username": "username",
-  "email": "email@email.com",
-  "password": "password",
-  "user_watchedMovies":[
-    {
-      "movieId": 1,
-      "movieName": "Movie name"
-    }
-  ],
-  "user_watchList": [
-    {
-      "movieId": 2,
-      "movieName": "Movie to watch name"
-    }
-  ],
+  "username": "devMarceloCima2",
+  "name": "Dev Marcelo",
+  "email": "marcelo@gmail.com",
+  "watchedMovies": [],
+  "watchList": [],
   "reviews": [
     {
-      "reviewId": 1,
-      "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-      "movieId": "1",
-      "grade": 2.5,
-      "content": "This movie is awful."
+      "user": {
+        "username": "devMarceloCima2",
+        "name": "Dev Marcelo"
+      },
+      "movie": {
+        "name": "Demolition",
+        "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+        "studio": {
+          "name": "Sony Pictures"
+        },
+        "cast": [
+          {
+            "name": "Jake Gyllenhaal"
+          }
+        ],
+        "finalGrade": 7.0
+      },
+      "grade": 7.0,
+      "content": "content",
+      "creationTimestamp": "2024-12-28T13:37:35.771395Z"
     }
-  ],
-  "creationTimestamp": "2024-12-26 09:25:41"
+  ]
 }
 ````
 Status:
@@ -220,34 +226,36 @@ Response body:
 ````json
 [
   {
-      "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-      "name": "name",
-      "username": "username",
-      "email": "email@email.com",
-      "password": "password",
-      "user_watchedMovies":[
-        {
-          "movieId": 1,
-          "movieName": "Movie name"
-        }
-      ],
-      "user_watchList": [
-        {
-          "movieId": 2,
-          "movieName": "Movie to watch name"
-        }
-      ],
-      "reviews": [
-        {
-          "reviewId": 1,
-          "userId": "b930fcf1-b5d5-4486-9426-658c38434ffe",
-          "movieId": "1",
-          "grade": 2.5,
-          "content": "This movie is awful."
-        }
-      ],
-      "creationTimestamp": "2024-12-26 09:25:41"
-    }
+    "username": "devMarceloCima2",
+    "name": "Dev Marcelo",
+    "email": "marcelo@gmail.com",
+    "watchedMovies": [],
+    "watchList": [],
+    "reviews": [
+      {
+        "user": {
+          "username": "devMarceloCima2",
+          "name": "Dev Marcelo"
+        },
+        "movie": {
+          "name": "Demolition",
+          "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+          "studio": {
+            "name": "Sony Pictures"
+          },
+          "cast": [
+            {
+              "name": "Jake Gyllenhaal"
+            }
+          ],
+          "finalGrade": 7.0
+        },
+        "grade": 7.0,
+        "content": "content",
+        "creationTimestamp": "2024-12-28T13:37:35.771395Z"
+      }
+    ]
+  }
 ]
 ````
 Status:
@@ -261,23 +269,24 @@ Status:
 Body:
 ````json
 {
-  "name": "Another name",
-  "password": "newPassword"
+  "name" : "Dev Marcelo",
+  "password" : "newPassword123"
 }
 ````
 Status:
 
-| **Code** | **Status** | **Reason**                         |
-|----------|------------|------------------------------------|
-| 200      | Ok         | The User was successfully updated. |
-| 404      | Not found  | User was not found.                |
+| **Code** | **Status** | **Reason**                     |
+|----------|------------|--------------------------------|
+| 200      | Ok         | User was successfully updated. |
+| 404      | Not found  | User was not found.            |
+
 ### Delete User by ID
 Status:
 
-| **Code** | **Status** | **Reason**                         |
-|----------|------------|------------------------------------|
-| 200      | Ok         | The User was successfully deleted. |
-| 404      | Not found  | User was not found.                |
+| **Code** | **Status** | **Reason**                     |
+|----------|------------|--------------------------------|
+| 200      | Ok         | User was successfully deleted. |
+| 404      | Not found  | User was not found.            |
 
 ## Movie
 
@@ -287,7 +296,78 @@ Status:
 | Get Movie by name | Get      | /movie/{movieName} |
 | List Movies       | Get      | /movie/movies      |
 
+### Create Movie
 
+Body:
+````json
+{
+    "name": "Demolition",
+    "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+    "studio": "Sony Pictures",
+    "cast": ["Jake Gyllenhaal"]
+}
+````
+
+Status:
+
+| **Code** | **Status**  | **Reason**                      |
+|----------|-------------|---------------------------------|
+| 201      | Created     | Movie was successfully created. |
+| 400      | Bad Request | Movie not created.              |
+
+### Get Movie by name
+
+Response body:
+
+````json
+{
+    "name": "Demolition",
+    "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+    "studio": {
+        "name": "Sony Pictures"
+    },
+    "cast": [
+        {
+            "name": "Jake Gyllenhaal"
+        }
+    ],
+    "finalGrade": 7.0
+}
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                       |
+|----------|------------|----------------------------------|
+| 200      | Ok         | Movie was successfully returned. |
+| 404      | Not found  | Movie was not found.             |
+
+### List Movies
+
+Response body:
+````json
+[
+    {
+        "name": "Demolition",
+        "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+        "studio": {
+            "name": "Sony Pictures"
+        },
+        "cast": [
+            {
+                "name": "Jake Gyllenhaal"
+            }
+        ],
+        "finalGrade": 7.0
+    }
+]
+````
+Status:
+
+| **Code** | **Status** | **Reason**                                  |
+|----------|------------|---------------------------------------------|
+| 200      | Ok         | A list of Movies was successfully returned. |
+| 404      | Not found  | No one Movie was found.                     |
 
 ## Artist
 
@@ -297,6 +377,87 @@ Status:
 | Get Artist by name | Get      | /artist/{artistName} |
 | List Artists       | Get      | /artist/artists      |
 
+### Create Artist
+
+Body:
+````json
+{
+    "name": "Jake Gyllenhaal"
+}
+````
+Status:
+
+| **Code** | **Status**  | **Reason**                       |
+|----------|-------------|----------------------------------|
+| 201      | Created     | Artist was successfully created. |
+| 400      | Bad Request | Artist not created.              |
+
+### Get Artist by name
+
+Response body:
+
+````json
+{
+    "name": "Jake Gyllenhaal",
+    "movies": [
+        {
+            "name": "Demolition",
+            "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+            "studio": {
+                "name": "Sony Pictures"
+            },
+            "cast": [
+                {
+                    "name": "Jake Gyllenhaal"
+                }
+            ],
+            "finalGrade": 7.0
+        }
+    ]
+}
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                        |
+|----------|------------|-----------------------------------|
+| 200      | Ok         | Artist was successfully returned. |
+| 404      | Not found  | Artist was not found.             |
+
+### List Artists
+
+Response body:
+
+````json
+[
+    {
+        "name": "Jake Gyllenhaal",
+        "movies": [
+            {
+                "name": "Demolition",
+                "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+                "studio": {
+                    "name": "Sony Pictures"
+                },
+                "cast": [
+                    {
+                        "name": "Jake Gyllenhaal"
+                    }
+                ],
+                "finalGrade": 7.0
+            }
+        ]
+    }
+]
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                                   |
+|----------|------------|----------------------------------------------|
+| 200      | Ok         | A list of Artists was successfully returned. |
+| 404      | Not found  | No one Artist was found.                     |
+
 ## Studio
 
 | **Actions**        | **Type** | **Path**             |
@@ -304,6 +465,89 @@ Status:
 | Create Studio      | Post     | /studio              |
 | Get Studio by name | Get      | /studio/{studioName} |
 | List Studios       | Get      | /studio/studios      |
+
+### Create Studio
+
+Body:
+
+````json
+{
+    "name": "Sony Pictures"
+}
+````
+
+Status:
+
+| **Code** | **Status**  | **Reason**                       |
+|----------|-------------|----------------------------------|
+| 201      | Created     | Studio was successfully created. |
+| 400      | Bad Request | Studio not created.              |
+
+### Get Studio by name
+
+Response body:
+
+````json
+{
+    "name": "Sony Pictures",
+    "movies": [
+        {
+            "name": "Demolition",
+            "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+            "studio": {
+                "name": "Sony Pictures"
+            },
+            "cast": [
+                {
+                    "name": "Jake Gyllenhaal"
+                }
+            ],
+            "finalGrade": 7.0
+        }
+    ]
+}
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                        |
+|----------|------------|-----------------------------------|
+| 200      | Ok         | Studio was successfully returned. |
+| 404      | Not found  | Studio was not found.             |
+
+### List Studios
+
+Response body:
+
+````json
+[
+    {
+        "name": "Sony Pictures",
+        "movies": [
+            {
+                "name": "Demolition",
+                "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+                "studio": {
+                    "name": "Sony Pictures"
+                },
+                "cast": [
+                    {
+                        "name": "Jake Gyllenhaal"
+                    }
+                ],
+                "finalGrade": 7.0
+            }
+        ]
+    }
+]
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                                   |
+|----------|------------|----------------------------------------------|
+| 200      | Ok         | A list of Studios was successfully returned. |
+| 404      | Not found  | No one Studio was found.                     |
 
 ## Review
 
@@ -313,6 +557,91 @@ Status:
 | List Reviews by User ID | Get      | /review/{userId}   |
 | Update Review by ID     | Put      | /review/{reviewId} |
 | Delete Review by ID     | Delete   | /review/{reviewId} |
+
+### Create Review
+
+Body:
+
+````json
+{
+    "userUsername": "devMarceloCima2",
+    "movieName": "Demolition",
+    "grade": 7.0,
+    "content": "content"
+}
+````
+
+Status:
+
+| **Code** | **Status**  | **Reason**                       |
+|----------|-------------|----------------------------------|
+| 201      | Created     | Review was successfully created. |
+| 400      | Bad Request | Review not created.              |
+
+### List Reviews by User ID
+
+Response body:
+
+````json
+[
+  {
+    "user": {
+      "username": "devMarceloCima2",
+      "name": "Dev Marcelo"
+    },
+    "movie": {
+      "name": "Demolition",
+      "description": "Davis (Jake Gyllenhaal) seemingly has the perfect life until a tragic car accident leaves him struggling to cope with the loss of his wife. When Davis takes a literal approach to his father-in-law’s (Chris Cooper) metaphorically-intended words of support, he begins demolishing the pieces of his life, one item at a time, searching for what’s truly important",
+      "studio": {
+        "name": "Sony Pictures"
+      },
+      "cast": [
+        {
+          "name": "Jake Gyllenhaal"
+        }
+      ],
+      "finalGrade": 7.16667
+    },
+    "grade": 7.0,
+    "content": "content",
+    "creationTimestamp": "2024-12-28T13:37:35.771395Z"
+  }
+]
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                                   |
+|----------|------------|----------------------------------------------|
+| 200      | Ok         | A list of Reviews was successfully returned. |
+| 404      | Not found  | Not found Reviews with this User Id.         |
+
+### Update Review by ID
+
+Body:
+
+````json
+{
+    "grade": 8.0,
+    "content": "content"
+}
+````
+
+Status:
+
+| **Code** | **Status** | **Reason**                       |
+|----------|------------|----------------------------------|
+| 200      | Ok         | Review was successfully updated. |
+| 404      | Not found  | Review was not found.            |
+
+### Delete Review by ID
+
+Status:
+
+| **Code** | **Status** | **Reason**                       |
+|----------|------------|----------------------------------|
+| 200      | Ok         | Review was successfully deleted. |
+| 404      | Not found  | Review was not found.            |
 
 ## ☝️🤓Author
 

@@ -2,6 +2,7 @@ package proj.devMarceloCimadon.MovieRater.Services;
 
 import org.springframework.stereotype.Service;
 import proj.devMarceloCimadon.MovieRater.Dto.Movie.CreateMovieDto;
+import proj.devMarceloCimadon.MovieRater.Dto.Movie.ResponseMovieDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
 import proj.devMarceloCimadon.MovieRater.Models.Movie;
@@ -31,10 +32,8 @@ public class MovieService {
         var movie = new Movie();
         movie.setName(createMovieDto.name());
         movie.setDescription(createMovieDto.description());
-        movie.setStudio(studioService.findStudioByName(createMovieDto.studio()).orElseThrow(() -> new RecordNotFoundException("Studio", createMovieDto.studio())));
-        var artists = createMovieDto.cast().stream()
-                .map(artistName -> artistService.findArtistByName(artistName).orElseThrow(() -> new RecordNotFoundException("Artist", artistName)))
-                .collect(Collectors.toList());
+        movie.setStudio(studioService.findStudioByName(createMovieDto.studio()));
+        var artists = createMovieDto.cast().stream().map(artistService::findArtistByName).collect(Collectors.toList());
         movie.setArtists(artists);
 
         var movieSaved = movieRepository.save(movie);
@@ -42,27 +41,20 @@ public class MovieService {
         return movieSaved.getMovieId();
     }
 
-    public List<Movie> listMovies(){
-        return movieRepository.findAll();
+    public List<ResponseMovieDto> listMovies(){
+        var movies = movieRepository.findAll();
+        return movies.stream().map(ResponseMovieDto :: fromEntity).toList();
     }
 
     public void updateMovieGrade(String movieName, List<Review> reviews){
-        var movieEntity = findMovieByName(movieName);
-        if (movieEntity.isEmpty()){
-            throw new RecordNotFoundException("Movie", movieName);
-        }
-        var movie = movieEntity.get();
+        var movie = findMovieByName(movieName);
         var averageGrade = reviews.stream().mapToDouble(Review::getGrade).average().orElse(0.0);
         movie.setFinalGrade((float) averageGrade);
 
         movieRepository.save(movie);
     }
 
-    public Optional<Movie> findMovieByName(String name){
-        var movie = movieRepository.findMovieByName(name);
-        if (movie.isEmpty()){
-            throw new RecordNotFoundException("Name", name);
-        }
-        return movie;
+    public Movie findMovieByName(String name){
+        return movieRepository.findMovieByName(name).orElseThrow(() -> new RecordNotFoundException("Movie name", name));
     }
 }

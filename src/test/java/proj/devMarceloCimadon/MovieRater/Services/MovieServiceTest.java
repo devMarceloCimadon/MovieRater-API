@@ -53,12 +53,12 @@ class MovieServiceTest {
         void shouldCreateAMovieWithSuccess() {
             //Arrange
             var studio = new Studio(1L, "name", null);
-            when(studioService.findStudioByName(studio.getName())).thenReturn(Optional.of(studio));
+            when(studioService.findStudioByName(studio.getName())).thenReturn(studio);
 
             var artist1 = new Artist(1L, "name1", null);
             var artist2 = new Artist(2L, "name2", null);
-            when(artistService.findArtistByName(artist1.getName())).thenReturn(Optional.of(artist1));
-            when(artistService.findArtistByName(artist2.getName())).thenReturn(Optional.of(artist2));
+            when(artistService.findArtistByName(artist1.getName())).thenReturn(artist1);
+            when(artistService.findArtistByName(artist2.getName())).thenReturn(artist2);
 
             var cast = new ArrayList<String>();
             cast.add(artist1.getName());
@@ -90,18 +90,6 @@ class MovieServiceTest {
             assertThrows(RecordNotCreatedException.class, () -> movieService.createMovie(input));
             verify(movieRepository, times(0)).save(any());
         }
-
-        @Test
-        @DisplayName("Should throw a record not found exception when studio was not found")
-        void shouldThrowARecordNotFoundExceptionWhenStudioWasNotFound() {
-            var studioName = "name";
-            when(studioService.findStudioByName(studioName)).thenReturn(Optional.empty());
-
-            var input = new CreateMovieDto("name", "description", studioName, null);
-
-            assertThrows(RecordNotFoundException.class, () -> movieService.createMovie(input));
-            verify(movieRepository, times(0)).save(any());
-        }
     }
 
     @Nested
@@ -110,8 +98,12 @@ class MovieServiceTest {
         @DisplayName("Should return all movies with success")
         void shouldReturnAllMoviesWithSuccess() {
             //Arrange
+            List<Artist> artists = new ArrayList<>();
+            artists.add(new Artist(1L, "name", null));
+
             var studio = new Studio(1L, "name", null);
-            var movie = new Movie(1L, "name", "description", studio, null, null, null, null, 7.8F);
+
+            var movie = new Movie(1L, "name", "description", studio, null, null, artists, null, 7.8F);
             var movieList = List.of(movie);
             doReturn(movieList).when(movieRepository).findAll();
             //Act
@@ -166,7 +158,7 @@ class MovieServiceTest {
             //Act
             var output = movieService.findMovieByName(movie.getName());
             //Assert
-            assertTrue(output.isPresent());
+            assertNotNull(output);
             assertEquals(movie.getName(), nameArgumentCaptor.getValue());
         }
 

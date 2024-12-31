@@ -3,6 +3,7 @@ package proj.devMarceloCimadon.MovieRater.Controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import proj.devMarceloCimadon.MovieRater.Dto.User.CreateUserDto;
+import proj.devMarceloCimadon.MovieRater.Dto.User.ResponseUserDto;
 import proj.devMarceloCimadon.MovieRater.Dto.User.UpdateUserDto;
 import proj.devMarceloCimadon.MovieRater.Models.User;
 import proj.devMarceloCimadon.MovieRater.Services.UserService;
@@ -26,19 +27,21 @@ public class UserController {
     }
 
     @GetMapping("/name/{userName}")
-    public ResponseEntity<List<User>> getUserByName(@PathVariable("userName") String userName) {
+    public ResponseEntity<List<ResponseUserDto>> getUserByName(@PathVariable("userName") String userName) {
         var users = userService.findUserByName(userName);
-        return ResponseEntity.ok(users.get());
+        var usersResponse = users.stream().map(ResponseUserDto :: fromEntity).toList();
+        return ResponseEntity.ok(usersResponse);
     }
 
     @GetMapping("/username/{userUsername}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable("userUsername") String userUsername) {
+    public ResponseEntity<ResponseUserDto> getUserByUsername(@PathVariable("userUsername") String userUsername) {
         var user = userService.findUserByUsername(userUsername);
-        return ResponseEntity.ok(user.get());
+        var usersResponse = ResponseUserDto.fromEntity(user);
+        return ResponseEntity.ok(usersResponse);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> listUsers() {
+    public ResponseEntity<List<ResponseUserDto>> listUsers() {
         var users = userService.listUsers();
         return ResponseEntity.ok(users);
     }

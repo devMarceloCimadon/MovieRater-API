@@ -2,6 +2,7 @@ package proj.devMarceloCimadon.MovieRater.Services;
 
 import org.springframework.stereotype.Service;
 import proj.devMarceloCimadon.MovieRater.Dto.Artist.CreateArtistDto;
+import proj.devMarceloCimadon.MovieRater.Dto.Artist.ResponseArtistDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotFoundException;
 import proj.devMarceloCimadon.MovieRater.Models.Artist;
@@ -29,15 +30,12 @@ public class ArtistService {
         return savedArtist.getArtistId();
     }
 
-    public List<Artist> listArtists(){
-        return artistRepository.findAll();
+    public List<ResponseArtistDto> listArtists(){
+        var artists = artistRepository.findAll();
+        return artists.stream().map(ResponseArtistDto :: fromEntity).toList();
     }
 
-    public Optional<Artist> findArtistByName(String name){
-        var artist = artistRepository.findArtistByName(name);
-        if (artist.isEmpty()){
-            throw new RecordNotFoundException("Name", name);
-        }
-        return artist;
+    public Artist findArtistByName(String name){
+        return artistRepository.findArtistByName(name).orElseThrow(() -> new RecordNotFoundException("Artist name", name));
     }
 }

@@ -2,6 +2,7 @@ package proj.devMarceloCimadon.MovieRater.Services;
 
 import org.springframework.stereotype.Service;
 import proj.devMarceloCimadon.MovieRater.Dto.User.CreateUserDto;
+import proj.devMarceloCimadon.MovieRater.Dto.User.ResponseUserDto;
 import proj.devMarceloCimadon.MovieRater.Dto.User.UpdateUserDto;
 import proj.devMarceloCimadon.MovieRater.Exceptions.DataWithThisValueAlreadyExists;
 import proj.devMarceloCimadon.MovieRater.Exceptions.RecordNotCreatedException;
@@ -43,24 +44,17 @@ public class UserService {
         return userSaved.getUserId();
     }
 
-    public Optional<List<User>> findUserByName(String name) {
-        var users = userRepository.findUserByName(name);
-        if (users.isEmpty()) {
-            throw new RecordNotFoundException("Name", name);
-        }
-        return users;
+    public List<User> findUserByName(String name) {
+        return userRepository.findUserByName(name).orElseThrow(() -> new RecordNotFoundException("Name", name));
     }
 
-    public Optional<User> findUserByUsername(String username) {
-        var user = userRepository.findUserByUsername(username);
-        if (user.isEmpty()) {
-            throw new RecordNotFoundException("Username", username);
-        }
-        return user;
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new RecordNotFoundException("Username", username));
     }
 
-    public List<User> listUsers() {
-        return userRepository.findAll();
+    public List<ResponseUserDto> listUsers() {
+        var users = userRepository.findAll();
+        return users.stream().map(ResponseUserDto :: fromEntity).toList();
     }
 
     public void updateUserById(String userId, UpdateUserDto updateUserDto) {
